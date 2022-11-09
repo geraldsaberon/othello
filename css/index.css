@@ -1,0 +1,50 @@
+:root {
+    --tsize: 60px;
+}
+
+#root {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tile {
+    width: var(--tsize);
+    height: var(--tsize);
+    background: #1faa6a;
+    outline: 1px solid #222;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: relative;
+    
+    cursor: pointer;
+    user-select: none;
+}
+
+.circle {
+    width: calc(var(--tsize) - 25%);
+    height: calc(var(--tsize) - 25%);
+    border: 1px solid #222;
+    border-radius: 100%;
+    position: relative;
+}
+
+.index {
+    position: absolute;
+    color: hsl(152.4, 69.2%, 30.4%);;
+    margin: 0;
+    padding: 0;
+    top: 4px;
+    left: 4px;
+    font-family: sans-serif;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, var(--tsize));
+    border: 2px solid #444;
+}
