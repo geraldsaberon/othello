@@ -53,9 +53,11 @@ function click(e) {
         turn = "O"
     else
         turn = "X"
+
     drawBoard(board);
-    updateScoreDisplay()
-    console.log("current turn", turn)
+    updateScoreDisplay();
+    updateTurnDisplay();
+
     return true;
 
 }
@@ -168,6 +170,15 @@ function updateScoreDisplay() {
     let score = getScores(board);
     scoreBlack.textContent = score.X;
     scoreWhite.textContent = score.O;
+}
+
+
+function updateTurnDisplay() {
+    let turnTracker = document.getElementById("turn");
+    if (turn == "X")
+        turnTracker.textContent = "Black";
+    else
+        turnTracker.textContent = "White";
 }
 
 
