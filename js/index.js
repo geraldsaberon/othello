@@ -4,7 +4,8 @@ const HEIGHT = 8;
 
 
 function drawBoard(board) {
-    const boardCopy = board;
+    const validMovesBoard = getBoardWithValidMoves(board, turn);
+    BOARD_CONTAINER.innerHTML = "";
     for (let x = 0; x < WIDTH; x++) {
         for (let y = 0; y < HEIGHT; y++) {
             let tile = document.createElement("div");
@@ -20,12 +21,14 @@ function drawBoard(board) {
             let circle = document.createElement("div");
             circle.className = "circle"
 
-            if (board[x][y] == " ")
+            if (validMovesBoard[x][y] == " ")
                 circle.hidden = true;
-            else if (board[x][y] == "X")
+            else if (validMovesBoard[x][y] == "X")
                 circle.style.background = "#222";
-            else if (board[x][y] == "O")
-                circle.style.background = "WHITE"
+            else if (validMovesBoard[x][y] == "O")
+                circle.style.background = "WHITE";
+            else if (validMovesBoard[x][y] == ".")
+                circle.hidden = false;
 
             tile.onclick = click;
             tile.appendChild(circle);
@@ -40,15 +43,20 @@ function click(e) {
     let ystart = parseInt(this.textContent[4]);
     console.log(xstart, ystart);
 
-    /* let tilesToFlip = isValidMove(board, tile, xstart, ystart);
-
+    let tilesToFlip = isValidMove(board, turn, xstart, ystart);
     if (tilesToFlip == false)
         return false // not valid move
 
-    board[xstart][ystart] = tile;
+    board[xstart][ystart] = turn;
     for (let [x, y] of tilesToFlip)
-        board[x][y] = tile;
-    return true; */
+        board[x][y] = turn;
+    if (turn == "X")
+        turn = "O"
+    else
+        turn = "X"
+    drawBoard(board);
+    console.log("current turn", turn)
+    return true;
 
 }
 
@@ -103,11 +111,23 @@ function isOnBoard(x, y) {
 
 
 function getBoardWithValidMoves(board, tile) {
-    const boardCopy = board.slice();
+    const boardCopy = getBoardCopy(board);
 
     for (let [x, y] of getValidMoves(boardCopy, tile))
         boardCopy[x][y] = ".";
 
+    return boardCopy;
+}
+
+
+function getBoardCopy(board) {
+    const boardCopy = getNewBoard();
+
+    for (let x = 0; x < WIDTH; x++) {
+        for (let y = 0; y < HEIGHT; y++) {
+            boardCopy[x][y] = board[x][y];
+        }
+    }
     return boardCopy;
 }
 
@@ -124,14 +144,34 @@ function getValidMoves(board, tile) {
 }
 
 
-function playGame() {
-    board = getNewBoard();
+function getScores(board) {
+    let xscore = 0;
+    let oscore = 0;
+
+    for (let x = 0; x < WIDTH; x++) {
+        for (let y = 0; y < HEIGHT; y++) {
+            if (board[x][y] == "X")
+                xscore++;
+            if (board[x][y] == "O")
+                oscore++;
+        }
+    }
+    console.log("X score", xscore);
+    console.log("O score", oscore);
+    return {X:xscore, O:oscore}
+}
+
+
+function startGame() {
+    let board = getNewBoard();
     board[3][3] = "O";
     board[3][4] = "X";
     board[4][3] = "X";
     board[4][4] = "O";
     drawBoard(board);
-
+    return board;
 }
 
-playGame();
+
+let turn = "X"; 
+const board = startGame();
