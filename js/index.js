@@ -23,12 +23,20 @@ function drawBoard(board) {
 
             if (validMovesBoard[x][y] == " ")
                 circle.hidden = true;
-            else if (validMovesBoard[x][y] == "X")
+            else if (validMovesBoard[x][y] == "X") {
                 circle.style.background = "#222";
-            else if (validMovesBoard[x][y] == "O")
-                circle.style.background = "WHITE";
-            else if (validMovesBoard[x][y] == ".")
+                circle.style.border = "none"
+            } else if (validMovesBoard[x][y] == "O") {
+                circle.style.background = "#eee";
+                circle.style.border = "none"
+            } else if (validMovesBoard[x][y] == ".") {
                 circle.hidden = false;
+                if (turn == "X") {
+                    circle.style.borderColor = "#222"
+                } else {
+                    circle.style.borderColor = "#eee"
+                }
+            }
 
             tile.onclick = click;
             tile.appendChild(circle);
@@ -49,10 +57,11 @@ function click(e) {
     board[xstart][ystart] = turn;
     for (let [x, y] of tilesToFlip)
         board[x][y] = turn;
-    if (turn == "X")
-        turn = "O"
-    else
-        turn = "X"
+
+    if (turn == "X" && getValidMoves(board, "O").length != 0)
+        turn = "O";
+    else if (getValidMoves(board, "X").length != 0)
+        turn = "X";
 
     drawBoard(board);
     updateScoreDisplay();
@@ -73,6 +82,8 @@ function getNewBoard() {
 }
 
 
+/* Returns false if move is invalid
+Returns a list of tiles to flip if valid */
 function isValidMove(board, tile, xstart, ystart) {
     if (board[xstart][ystart] != " " || !isOnBoard(xstart, ystart))
         return false;
@@ -134,6 +145,7 @@ function getBoardCopy(board) {
 }
 
 
+// returns a list of valid moves for a tile in a given board
 function getValidMoves(board, tile) {
     const validMoves = [];
     for (let x = 0; x < WIDTH; x++) {
@@ -158,8 +170,6 @@ function getScores(board) {
                 oscore++;
         }
     }
-    console.log("X score", xscore);
-    console.log("O score", oscore);
     return {X:xscore, O:oscore}
 }
 
