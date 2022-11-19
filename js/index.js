@@ -41,7 +41,6 @@ function drawBoard(board) {
 function click(e) {
     let xstart = parseInt(this.textContent[1]);
     let ystart = parseInt(this.textContent[4]);
-    console.log(xstart, ystart);
 
     let tilesToFlip = isValidMove(board, turn, xstart, ystart);
     if (tilesToFlip == false)
@@ -55,6 +54,7 @@ function click(e) {
     else
         turn = "X"
     drawBoard(board);
+    updateScoreDisplay()
     console.log("current turn", turn)
     return true;
 
@@ -159,6 +159,15 @@ function getScores(board) {
     console.log("X score", xscore);
     console.log("O score", oscore);
     return {X:xscore, O:oscore}
+}
+
+
+function updateScoreDisplay() {
+    let scoreBlack = document.getElementById("score-black");
+    let scoreWhite = document.getElementById("score-white");
+    let score = getScores(board);
+    scoreBlack.textContent = score.X;
+    scoreWhite.textContent = score.O;
 }
 
 

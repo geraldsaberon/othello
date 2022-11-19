@@ -2,9 +2,14 @@
     --tsize: 60px;
 }
 
+body {
+    font-family: sans-serif;
+}
+
 #root {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -50,3 +55,6 @@
     font-family: sans-serif;
 }
 
+#top-info {
+    margin-bottom: 12px;
+}
