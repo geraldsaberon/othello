@@ -9,6 +9,12 @@
     align-items: center;
 }
 
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, var(--tsize));
+    border: 2px solid #444;
+}
+
 .tile {
     width: var(--tsize);
     height: var(--tsize);
@@ -33,7 +39,8 @@
     position: relative;
 }
 
-.index {
+/* (x, y) coordinates shown in each tile */
+.coordinates {
     position: absolute;
     color: hsl(152.4, 69.2%, 30.4%);;
     margin: 0;
@@ -43,8 +50,3 @@
     font-family: sans-serif;
 }
 
-#board {
-    display: grid;
-    grid-template-columns: repeat(8, var(--tsize));
-    border: 2px solid #444;
-}
