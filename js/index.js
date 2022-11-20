@@ -184,11 +184,23 @@ function updateScoreDisplay() {
 
 
 function updateTurnDisplay() {
-    let turnTracker = document.getElementById("turn");
+    let turnTracker = document.getElementById("turn-tracker");
     if (turn == "X")
-        turnTracker.textContent = "Black";
+        turnTracker.textContent = "Black's turn";
     else
-        turnTracker.textContent = "White";
+        turnTracker.textContent = "White's turn";
+
+    let XValidMoves = getValidMoves(board, "X");
+    let OValidMoves = getValidMoves(board, "O");
+    if (XValidMoves.length == 0 && OValidMoves.length == 0) {
+        let scores = getScores(board);
+        if (scores.X > scores.O)
+            turnTracker.textContent = "Black wins";
+        else if (scores.O > scores.X)
+            turnTracker.textContent = "White wins";
+        else
+            turnTracker.textContent = "Game tie";
+    }
 }
 
 
