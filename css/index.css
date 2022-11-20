@@ -32,8 +32,11 @@ body {
     
     position: relative;
     
-    cursor: pointer;
     user-select: none;
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 .circle {

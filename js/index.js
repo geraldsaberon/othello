@@ -23,19 +23,16 @@ function drawBoard(board) {
 
             if (validMovesBoard[x][y] == " ")
                 circle.hidden = true;
-            else if (validMovesBoard[x][y] == "X") {
+            else if (validMovesBoard[x][y] == "X")
                 circle.style.background = "#222";
-                circle.style.border = "none"
-            } else if (validMovesBoard[x][y] == "O") {
+            else if (validMovesBoard[x][y] == "O")
                 circle.style.background = "#eee";
-                circle.style.border = "none"
-            } else if (validMovesBoard[x][y] == ".") {
-                circle.hidden = false;
-                if (turn == "X") {
+            else if (validMovesBoard[x][y] == ".") {
+                tile.className += " clickable"
+                if (turn == "X")
                     circle.style.borderColor = "#222"
-                } else {
+                else
                     circle.style.borderColor = "#eee"
-                }
             }
 
             tile.onclick = click;
