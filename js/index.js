@@ -29,13 +29,13 @@ function drawBoard(board) {
                 circle.style.background = "#eee";
             else if (validMovesBoard[x][y] == ".") {
                 tile.className += " clickable"
+                tile.onclick = click;
                 if (turn == "X")
                     circle.style.borderColor = "#222"
                 else
                     circle.style.borderColor = "#eee"
             }
 
-            tile.onclick = click;
             tile.appendChild(circle);
             BOARD_CONTAINER.appendChild(tile);
         }        
