@@ -47,25 +47,38 @@ function click(e) {
     let xstart = parseInt(this.textContent[1]);
     let ystart = parseInt(this.textContent[4]);
 
-    let tilesToFlip = isValidMove(board, turn, xstart, ystart);
-    if (tilesToFlip == false)
-        return false // not valid move
+    let moveSuccess = makeMove(board, turn, xstart, ystart);
 
-    board[xstart][ystart] = turn;
-    for (let [x, y] of tilesToFlip)
-        board[x][y] = turn;
-
-    if (turn == "X" && getValidMoves(board, "O").length != 0)
-        turn = "O";
-    else if (getValidMoves(board, "X").length != 0)
-        turn = "X";
+    if (moveSuccess) {
+        // only pass the turn to O if O has available moves
+        if (turn == "X" && getValidMoves(board, "O").length != 0)
+            turn = "O";
+        else if (getValidMoves(board, "X").length != 0)
+            turn = "X";
+    }
 
     drawBoard(board);
     updateScoreDisplay();
     updateTurnDisplay();
 
     return true;
+}
 
+
+/* Places tile in board at xstart, ystart
+Returns false if move provided is not a valid move
+Returns true if move is valid */
+function makeMove(board, tile, xstart, ystart) {
+    let tilesToFlip = isValidMove(board, turn, xstart, ystart);
+    
+    if (tilesToFlip == false)
+        return false
+
+    board[xstart][ystart] = turn;
+    for (let [x, y] of tilesToFlip)
+        board[x][y] = tile;
+
+    return true;
 }
 
 
