@@ -69,12 +69,12 @@ function click(e) {
 Returns false if move provided is not a valid move
 Returns true if move is valid */
 function makeMove(board, tile, xstart, ystart) {
-    let tilesToFlip = isValidMove(board, turn, xstart, ystart);
+    let tilesToFlip = isValidMove(board, tile, xstart, ystart);
     
     if (tilesToFlip == false)
         return false
 
-    board[xstart][ystart] = turn;
+    board[xstart][ystart] = tile;
     for (let [x, y] of tilesToFlip)
         board[x][y] = tile;
 
