@@ -200,9 +200,7 @@ function updateTurnDisplay() {
     else
         turnTracker.textContent = "White's turn";
 
-    let XValidMoves = getValidMoves(board, "X");
-    let OValidMoves = getValidMoves(board, "O");
-    if (XValidMoves.length == 0 && OValidMoves.length == 0) {
+    if (gameOver(board)) {
         let scores = getScores(board);
         if (scores.X > scores.O)
             turnTracker.textContent = "Black wins";
@@ -211,6 +209,19 @@ function updateTurnDisplay() {
         else
             turnTracker.textContent = "Game tie";
     }
+}
+
+
+/* Returns true if there are no more available moves for both players
+Return false if otherwise */
+function gameOver(board) {
+    let XValidMoves = getValidMoves(board, "X");
+    let OValidMoves = getValidMoves(board, "O");
+
+    if (XValidMoves.length == 0 && OValidMoves.length == 0)
+        return true;
+    else
+        return false;
 }
 
 
