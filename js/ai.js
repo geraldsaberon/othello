@@ -1,26 +1,45 @@
 function minimax(board, depth, isMaximizing) {
-    if (depth == 0 || gameOver(board)) {
-        // TODO: return heuristic evaluations
-        return 1;
-    }
+    if (depth == 0 || gameOver(board))
+        return mobility(board, aiTile, playerTile) + coinParity(board, aiTile, playerTile);
 
     if (isMaximizing) {
-        return 1;
+        let maxValue = -Infinity;
+        let possibleMoves = getValidMoves(board, aiTile);
+
+        for (let [x, y] of possibleMoves) {
+            let boardCopy = getBoardCopy(board);
+            makeMove(boardCopy, aiTile, x, y);
+            let value = minimax(boardCopy, depth-1, false);
+            maxValue = Math.max(maxValue, value)
+        }
+
+        return maxValue;
+
     } else {
-        return -1;
+        let minValue = Infinity;
+        let possibleMoves = getValidMoves(board, playerTile);
+
+        for (let [x, y] of possibleMoves) {
+            let boardCopy = getBoardCopy(board);
+            makeMove(boardCopy, playerTile, x, y);
+            let score = minimax(boardCopy, depth-1, true);
+            minValue = Math.min(minValue, score)
+        }
+
+        return minValue;
     }
 }
 
 
-function getAImove(board, AItile) {
-    let possibleMoves = getValidMoves(board, AItile);
+function getAImove(board, aiTile) {
+    let possibleMoves = getValidMoves(board, aiTile);
     possibleMoves = shuffleArray(possibleMoves);
 
     let bestScore = -Infinity;
     let bestMove;
     for (let [x, y] of possibleMoves) {
         let boardCopy = getBoardCopy(board);
-        makeMove(boardCopy, AItile, x, y);
+        makeMove(boardCopy, aiTile, x, y);
         let score = minimax(boardCopy, 4, true);
         if (score > bestScore) {
             bestMove = [x, y];
@@ -52,3 +71,28 @@ function executeAImove(board, tile) {
 
     return true;
 }
+
+
+// Heuristics
+function mobility(board, you, opponent) {
+    let yourTiles = getValidMoves(board, you).length;
+    let opponentTiles = getValidMoves(board, opponent).length;
+
+    let value;
+    if (yourTiles > opponentTiles)
+        value = (100 * yourTiles)/(yourTiles + opponentTiles)
+    else if (yourTiles < opponentTiles)
+        value = (100 * opponentTiles)/(yourTiles + opponentTiles)
+    else
+        value = 0;
+
+    return value;
+}
+
+
+function coinParity(board, you, opponent) {
+    let yourScore = getScores(board).O;
+    let opponentScore = getScores(board).X;
+    return  100 * (yourScore - opponentScore)/(yourScore + opponentScore);
+}
+
