@@ -1,4 +1,4 @@
-function minimax(board, depth, isMaximizing) {
+function minimax(board, depth, alpha, beta, isMaximizing) {
     if (depth == 0 || gameOver(board))
         return mobility(board, aiTile, playerTile) + coinParity(board, aiTile, playerTile);
 
@@ -9,8 +9,11 @@ function minimax(board, depth, isMaximizing) {
         for (let [x, y] of possibleMoves) {
             let boardCopy = getBoardCopy(board);
             makeMove(boardCopy, aiTile, x, y);
-            let value = minimax(boardCopy, depth-1, false);
-            maxValue = Math.max(maxValue, value)
+            let value = minimax(boardCopy, depth-1, alpha, beta, false);
+            maxValue = Math.max(maxValue, value);
+            alpha = Math.max(alpha, maxValue);
+            if (beta <= alpha)
+                break;
         }
 
         return maxValue;
@@ -22,8 +25,11 @@ function minimax(board, depth, isMaximizing) {
         for (let [x, y] of possibleMoves) {
             let boardCopy = getBoardCopy(board);
             makeMove(boardCopy, playerTile, x, y);
-            let score = minimax(boardCopy, depth-1, true);
-            minValue = Math.min(minValue, score)
+            let score = minimax(boardCopy, depth-1, alpha, beta, true);
+            minValue = Math.min(minValue, score);
+            beta = Math.min(beta, minValue);
+            if (beta <= alpha)
+                break;
         }
 
         return minValue;
@@ -40,7 +46,7 @@ function getAImove(board, aiTile) {
     for (let [x, y] of possibleMoves) {
         let boardCopy = getBoardCopy(board);
         makeMove(boardCopy, aiTile, x, y);
-        let score = minimax(boardCopy, 4, true);
+        let score = minimax(boardCopy, 4, -Infinity, Infinity, true);
         if (score > bestScore) {
             bestMove = [x, y];
             bestScore = score;
