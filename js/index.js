@@ -48,18 +48,20 @@ function click(e) {
     let ystart = parseInt(this.textContent[4]);
 
     let moveSuccess = makeMove(board, turn, xstart, ystart);
-
     if (moveSuccess) {
-        // only pass the turn to O if O has available moves
-        if (turn == "X" && getValidMoves(board, "O").length != 0)
-            turn = "O";
-        else if (getValidMoves(board, "X").length != 0)
-            turn = "X";
+        // only pass the turn to other player if they have available moves
+        if (turn == playerTile && getValidMoves(board, aiTile).length != 0)
+            turn = aiTile;
+        else if (getValidMoves(board, playerTile).length != 0)
+            turn = playerTile;
     }
 
     drawBoard(board);
     updateScoreDisplay();
     updateTurnDisplay();
+
+    if (getValidMoves(board, aiTile).length != 0)
+        setTimeout(() => executeAImove(board, turn), 500)
 
     return true;
 }
@@ -236,5 +238,7 @@ function startGame() {
 }
 
 
-let turn = "X"; 
+const playerTile = "X"
+const aiTile = "O"
+let turn = playerTile;
 const board = startGame();
