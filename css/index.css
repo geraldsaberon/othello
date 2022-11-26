@@ -50,7 +50,8 @@ body {
 /* (x, y) coordinates shown in each tile */
 .coordinates {
     position: absolute;
-    color: hsl(152.4, 69.2%, 30.4%);;
+    /*color: hsl(152.4, 69.2%, 30.4%);*/
+    color: #1faa6a;
     margin: 0;
     padding: 0;
     top: 4px;
