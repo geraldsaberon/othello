@@ -1,7 +1,7 @@
 const BOARD_CONTAINER = document.getElementById("board");
 const WIDTH = 8;
 const HEIGHT = 8;
-const AI_MOVE_DELAY = 100; // milliseconds
+const AI_MOVE_DELAY = 500; // milliseconds
 
 
 function drawBoard(board, xprev, yprev) {
