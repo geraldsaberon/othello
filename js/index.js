@@ -3,7 +3,7 @@ const WIDTH = 8;
 const HEIGHT = 8;
 
 
-function drawBoard(board) {
+function drawBoard(board, xprev, yprev) {
     const validMovesBoard = getBoardWithValidMoves(board, turn);
     BOARD_CONTAINER.innerHTML = "";
     for (let x = 0; x < WIDTH; x++) {
@@ -36,6 +36,10 @@ function drawBoard(board) {
                     circle.style.borderColor = "#eee"
             }
 
+            if (x == xprev && y == yprev) {
+                tile.style.background = 'red';
+            }
+
             tile.appendChild(circle);
             BOARD_CONTAINER.appendChild(tile);
         }        
@@ -56,7 +60,7 @@ function click(e) {
             turn = playerTile;
     }
 
-    drawBoard(board);
+    drawBoard(board, xstart, ystart);
     updateScoreDisplay();
     updateTurnDisplay();
 

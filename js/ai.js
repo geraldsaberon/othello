@@ -75,7 +75,7 @@ function executeAImove(board, tile) {
             turn = playerTile;
     }
 
-    drawBoard(board);
+    drawBoard(board, AImove[0], AImove[1]);
     updateScoreDisplay();
     updateTurnDisplay();
 
