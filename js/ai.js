@@ -46,7 +46,7 @@ function getAImove(board, aiTile) {
     for (let [x, y] of possibleMoves) {
         let boardCopy = getBoardCopy(board);
         makeMove(boardCopy, aiTile, x, y);
-        let score = minimax(boardCopy, 4, -Infinity, Infinity, true);
+        let score = minimax(boardCopy, 3, -Infinity, Infinity, true);
         if (score > bestScore) {
             bestMove = [x, y];
             bestScore = score;
@@ -59,8 +59,12 @@ function getAImove(board, aiTile) {
 function executeAImove(board, tile) {
     let AImove = getAImove(board, tile);
     
-    if (AImove == undefined)
-        return
+    if (AImove == undefined) {
+        turn = playerTile;
+        drawBoard(board);
+        updateTurnDisplay();
+        return;
+    }
 
     let moveSuccess = makeMove(board, tile, AImove[0], AImove[1]);
 
