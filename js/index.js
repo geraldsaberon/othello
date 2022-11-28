@@ -1,6 +1,7 @@
 const BOARD_CONTAINER = document.getElementById("board");
 const WIDTH = 8;
 const HEIGHT = 8;
+const AI_MOVE_DELAY = 100; // milliseconds
 
 
 function drawBoard(board, xprev, yprev) {
@@ -64,10 +65,8 @@ function click(e) {
     updateScoreDisplay();
     updateTurnDisplay();
 
-    if (getValidMoves(board, aiTile).length != 0)
-        setTimeout(() => executeAImove(board, turn), 500)
-
-    return true;
+    if (turn == aiTile && getValidMoves(board, aiTile).length != 0)
+        setTimeout(() => executeAImove(board, turn), AI_MOVE_DELAY)
 }
 
 
