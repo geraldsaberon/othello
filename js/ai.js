@@ -37,15 +37,15 @@ function minimax(board, depth, alpha, beta, isMaximizing) {
 }
 
 
-function getAImove(board, aiTile) {
-    let possibleMoves = getValidMoves(board, aiTile);
+function getAImove(board, tile) {
+    let possibleMoves = getValidMoves(board, tile);
     possibleMoves = shuffleArray(possibleMoves);
 
     let bestScore = -Infinity;
-    let bestMove;
+    let bestMove = possibleMoves[0];
     for (let [x, y] of possibleMoves) {
         let boardCopy = getBoardCopy(board);
-        makeMove(boardCopy, aiTile, x, y);
+        makeMove(boardCopy, tile, x, y);
         let score = minimax(boardCopy, 3, -Infinity, Infinity, true);
         if (score > bestScore) {
             bestMove = [x, y];
@@ -68,18 +68,17 @@ function executeAImove(board, tile) {
 
     let moveSuccess = makeMove(board, tile, AImove[0], AImove[1]);
 
-    if (moveSuccess) {
-        if (turn == playerTile && getValidMoves(board, aiTile).length != 0)
-            turn = aiTile;
-        else if (getValidMoves(board, playerTile).length != 0)
+    if (moveSuccess)
+        if (getValidMoves(board, playerTile).length != 0)
             turn = playerTile;
-    }
 
     drawBoard(board, AImove[0], AImove[1]);
     updateScoreDisplay();
     updateTurnDisplay();
 
-    return true;
+    // if AI's opponent has no available moves, do executeMove again
+    if (getValidMoves(board, playerTile).length == 0)
+        setTimeout(() => executeAImove(board, tile), AI_MOVE_DELAY)
 }
 
 
