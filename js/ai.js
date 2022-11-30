@@ -1,6 +1,14 @@
 function minimax(board, depth, alpha, beta, isMaximizing) {
-    if (depth == 0 || gameOver(board))
-        return mobility(board, aiTile, playerTile) + coinParity(board, aiTile, playerTile);
+    if (depth == 0 || gameOver(board)) {
+        let max = isMaximizing ? aiTile : playerTile;
+        let min = !isMaximizing ? aiTile : playerTile;
+        
+        let m = mobility(board, max, min);
+        let cp = coinParity(board, max, min);
+        let cc = cornersCaptured(board, max, min);
+
+        return m + cp + cc;
+    }
 
     if (isMaximizing) {
         let maxValue = -Infinity;
@@ -46,7 +54,7 @@ function getAImove(board, tile) {
     for (let [x, y] of possibleMoves) {
         let boardCopy = getBoardCopy(board);
         makeMove(boardCopy, tile, x, y);
-        let score = minimax(boardCopy, 3, -Infinity, Infinity, true);
+        let score = minimax(boardCopy, 3, -Infinity, Infinity, false);
         if (score > bestScore) {
             bestMove = [x, y];
             bestScore = score;
@@ -83,15 +91,15 @@ function executeAImove(board, tile) {
 
 
 // Heuristics
-function mobility(board, you, opponent) {
-    let yourTiles = getValidMoves(board, you).length;
-    let opponentTiles = getValidMoves(board, opponent).length;
+function mobility(board, max, min) {
+    let maxTiles = getValidMoves(board, max).length;
+    let minTiles = getValidMoves(board, min).length;
 
     let value;
-    if (yourTiles > opponentTiles)
-        value = (100 * yourTiles)/(yourTiles + opponentTiles)
-    else if (yourTiles < opponentTiles)
-        value = (100 * opponentTiles)/(yourTiles + opponentTiles)
+    if (maxTiles > minTiles)
+        value = (100 * maxTiles) / (maxTiles + minTiles);
+    else if (maxTiles < minTiles)
+        value = (100 * minTiles) / (maxTiles + minTiles);
     else
         value = 0;
 
@@ -99,9 +107,30 @@ function mobility(board, you, opponent) {
 }
 
 
-function coinParity(board, you, opponent) {
-    let yourScore = getScores(board).O;
-    let opponentScore = getScores(board).X;
-    return  100 * (yourScore - opponentScore)/(yourScore + opponentScore);
+function coinParity(board, max, min) {
+    let maxScore = getScores(board)[max];
+    let minScore = getScores(board)[min];
+
+    return  100 * (maxScore - minScore) / (maxScore + minScore);
 }
 
+
+function cornersCaptured(board, max, min) {
+    const corners = [[0,0], [0,7], [7,0], [7,7]];
+    let maxValue = 0;
+    let minValue = 0;
+
+    for (let c of corners) {
+        if (board[c[0]][c[1]] == max)
+            maxValue++;
+        else if (board[c[0]][c[1]] == min)
+            minValue++;
+    }
+
+    let value = 100 * (maxValue - minValue) / (maxValue + minValue);
+
+    if (Number.isNaN(value))
+        value = 0;
+
+    return value;
+}
