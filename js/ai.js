@@ -2,12 +2,13 @@ function minimax(board, depth, alpha, beta, isMaximizing) {
     if (depth == 0 || gameOver(board)) {
         let max = isMaximizing ? aiTile : playerTile;
         let min = !isMaximizing ? aiTile : playerTile;
-        
+
         let m = mobility(board, max, min);
         let cp = coinParity(board, max, min);
         let cc = cornersCaptured(board, max, min);
+        let sw = staticWeights(board, max, min);
 
-        return m + cp + cc;
+        return m + cp + cc + sw;
     }
 
     if (isMaximizing) {
@@ -133,4 +134,33 @@ function cornersCaptured(board, max, min) {
         value = 0;
 
     return value;
+}
+
+
+const WEIGHTS = [
+    [20, -3, 11,  8,  8, 11, -3, 20],
+    [-3, -7, -4,  1,  1, -4, -7, -3],
+    [11, -4,  2,  2,  2,  2, -4, 11],
+    [ 8,  1,  2, -3, -3,  2,  1,  8],
+    [ 8,  1,  2, -3, -3,  2,  1,  8],
+    [11, -4,  2,  2,  2,  2, -4, 11],
+    [-3, -7, -4,  1,  1, -4, -7, -3],
+    [20, -3, 11,  8,  8, 11, -3, 20],
+]
+
+
+function staticWeights(board, max, min) {
+    let maxValue = 0;
+    let minValue = 0;
+    
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            if (board[i][j] == max)
+                maxValue += WEIGHTS[i][j];
+            else if (board[i][j] == min)
+                minValue += WEIGHTS[i][j];
+        }
+    }
+
+    return maxValue - minValue;
 }
