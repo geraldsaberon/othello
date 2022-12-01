@@ -241,7 +241,15 @@ function startGame() {
 }
 
 
+function reset() {
+    turn = playerTile;
+    board = startGame();
+    updateScoreDisplay();
+    updateTurnDisplay();
+}
+
+
 const playerTile = "X"
 const aiTile = "O"
 let turn = playerTile;
-const board = startGame();
+let board = startGame();
