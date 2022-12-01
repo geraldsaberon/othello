@@ -86,7 +86,7 @@ function executeAImove(board, tile) {
     updateTurnDisplay();
 
     // if AI's opponent has no available moves, do executeMove again
-    if (getValidMoves(board, playerTile).length == 0)
+    if (getValidMoves(board, playerTile).length == 0 && !gameOver(board))
         setTimeout(() => executeAImove(board, tile), AI_MOVE_DELAY)
 }
 
