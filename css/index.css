@@ -39,6 +39,10 @@ body {
     cursor: pointer;
 }
 
+.clickable:hover .circle {
+    background: #2222;
+} 
+
 .circle {
     width: calc(var(--tsize) - 25%);
     height: calc(var(--tsize) - 25%);
