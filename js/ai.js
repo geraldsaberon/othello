@@ -8,7 +8,7 @@ function minimax(board, depth, alpha, beta, isMaximizing) {
         let cc = cornersCaptured(board, max, min);
         let sw = staticWeights(board, max, min);
 
-        return m + cp + cc + sw;
+        return 3*m + cp + 4*cc + 2*sw;
     }
 
     if (isMaximizing) {
