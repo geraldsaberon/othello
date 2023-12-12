@@ -29,10 +29,11 @@ function drawBoard(board, xprev, yprev) {
             else if (validMovesBoard[x][y] == "O")
                 circle.style.background = "#eee";
             else if (validMovesBoard[x][y] == ".") {
-                tile.className += " clickable"
-                tile.onclick = click;
-                if (turn == "X")
+                if (turn == "X") {
+                    tile.className += " clickable"
+                    tile.onclick = click;
                     circle.style.borderColor = "#222"
+                }
                 else
                     circle.style.borderColor = "#eee"
             }
